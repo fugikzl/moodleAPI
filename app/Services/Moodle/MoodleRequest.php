@@ -19,9 +19,9 @@ class MoodleRequest
      * @param array $params parametres of request. Like userid, courseid ant etc.
      * 
      */
-    public function __construct(        
-        private string $ws_function,
+    public function __construct(       
         private string $ws_token,
+        private string $ws_function,
         private array $params = [],
         private string $format = "json"
     ){
@@ -41,9 +41,5 @@ class MoodleRequest
         $res = $client->request('GET', config("moodle.webservice_url"), $this->params);
         return json_decode($res->getBody()->getContents(),1);
     }
-
-
 }
-
-
 ?>

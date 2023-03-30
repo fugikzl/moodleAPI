@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Services\Moodle;
-use App\Services\Moodle\MoodleRequest;
 
-/**
+class MoodleFunctions
+{
+    /**
      * 
      * @param string $ws_token 
      * 
      */
-    function getUserInfo(string $ws_token)
+    public static function getUserInfo(string $ws_token)
     {
         $moodleRequest = new MoodleRequest($ws_token,"core_webservice_get_site_info");
         $res = $moodleRequest->send();
-
         return [
             "fullname" => $res['fullname'],
             "username" => $res['username'],
@@ -20,20 +20,20 @@ use App\Services\Moodle\MoodleRequest;
         ];
     }
 
-    function getUserCourses(string $ws_token, int $userid)
+    public static function getUserCourses(string $ws_token, int $userid)
     {
         $moodleRequest = new MoodleRequest($ws_token,"core_enrol_get_users_courses",["userid" => $userid]);
         return $moodleRequest->send();
     }
 
-    function getCoursesInfo(string $ws_token, int $courseid)
+    public static function getCoursesInfo(string $ws_token, int $courseid)
     {
 
         $moodleRequest = new MoodleRequest($ws_token,"core_course_get_contents",["courseid" => $courseid]);
         return $moodleRequest->send();
     }
 
-    function getUserCoursesGrade(string $ws_token, int $userid)
+    public static function getUserCoursesGrade(string $ws_token, int $userid)
     {
 
         $moodleRequest = new MoodleRequest($ws_token,"gradereport_overview_get_course_grades",[
@@ -42,7 +42,7 @@ use App\Services\Moodle\MoodleRequest;
         return $moodleRequest->send();
     }
 
-    function getCourseGrades(string $ws_token, int $courseid, int $userid)
+    public static function getCourseGrades(string $ws_token, int $courseid, int $userid)
     {
 
         $moodleRequest = new MoodleRequest($ws_token,"gradereport_user_get_grade_items",[
@@ -68,7 +68,7 @@ use App\Services\Moodle\MoodleRequest;
         return $gradeitems;
     }
 
-    function getCourseInfoTable(string $ws_token, int $courseid, int $userid)
+    public static function getCourseInfoTable(string $ws_token, int $courseid, int $userid)
     {
 
         $moodleRequest = new MoodleRequest($ws_token,"gradereport_user_get_grades_table",[
@@ -78,7 +78,7 @@ use App\Services\Moodle\MoodleRequest;
         return $moodleRequest->send();
     }
 
-    function getCourseAssignments(string $ws_token, int $courseid)
+    public static function getCourseAssignments(string $ws_token, int $courseid)
     {
 
         $moodleRequest = new MoodleRequest($ws_token,"core_course_get_contents",[
@@ -90,7 +90,7 @@ use App\Services\Moodle\MoodleRequest;
         return $moodleRequest->send();
     }
 
-    function getCourseById(string $ws_token, int $courseid)
+    public static function getCourseById(string $ws_token, int $courseid)
     {
         $moodleRequest = new MoodleRequest($ws_token,"core_course_get_courses_by_field",[
             "field" => "id",
@@ -98,3 +98,5 @@ use App\Services\Moodle\MoodleRequest;
         ]);
         return $moodleRequest->send()["courses"];
     }
+}
+
