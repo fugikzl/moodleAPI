@@ -22,7 +22,7 @@ class MoodleRequest
     public function __construct(        
         private string $ws_function,
         private string $ws_token,
-        private array $params,
+        private array $params = [],
         private string $format = "json"
     ){
         $this->params['wsfunction'] = $ws_function;
@@ -33,13 +33,13 @@ class MoodleRequest
     /** 
      * 
      * Send request
-     * 
+     * @return array resultant response array
      */
-    public function send()
+    public function send() : array
     {
         $client = new Client();    
         $res = $client->request('GET', config("moodle.webservice_url"), $this->params);
-        return $res->getBody()->getContents();
+        return json_decode($res->getBody()->getContents(),1);
     }
 
 
