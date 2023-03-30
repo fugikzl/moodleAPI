@@ -13,10 +13,10 @@ class MoodleFunctions
     {
         $moodleRequest = new MoodleRequest($ws_token,"core_webservice_get_site_info");
         $res = $moodleRequest->send();
-        return [
-            "fullname" => $res['fullname'],
+        return[
+            "full_name" => $res['fullname'],
             "username" => $res['username'],
-            "userid" => $res["userid"],
+            "user_id" => $res["userid"],
         ];
     }
 
@@ -28,14 +28,12 @@ class MoodleFunctions
 
     public static function getCoursesInfo(string $ws_token, int $courseid)
     {
-
         $moodleRequest = new MoodleRequest($ws_token,"core_course_get_contents",["courseid" => $courseid]);
         return $moodleRequest->send();
     }
 
     public static function getUserCoursesGrade(string $ws_token, int $userid)
     {
-
         $moodleRequest = new MoodleRequest($ws_token,"gradereport_overview_get_course_grades",[
             "userid" => $userid,
         ]);
@@ -80,7 +78,6 @@ class MoodleFunctions
 
     public static function getCourseAssignments(string $ws_token, int $courseid)
     {
-
         $moodleRequest = new MoodleRequest($ws_token,"core_course_get_contents",[
             // "wsfunction" => "core_course_get_contents",
             "courseid" => $courseid,
