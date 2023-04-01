@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MoodleApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get("/{wstoken}/get-user-info",[MoodleApiController::class,"getUserInfo"]); // get info a    
+Route::get("/{wstoken}/get-user-courses",[MoodleApiController::class,"getUserCourses"]);
+Route::get("/{wstoken}/get-user-relative-courses",[MoodleApiController::class,"getUserRelativeCourses"]);
+Route::get("/{wstoken}/course/{course_id}/get-grade",[MoodleApiController::class,"getUserCourseGrade"]);
+
+
+

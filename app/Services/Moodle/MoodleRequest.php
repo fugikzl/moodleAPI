@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services\Moodle;
+
+use Exception;
 use GuzzleHttp\Client;
 
 class MoodleRequest
@@ -39,7 +41,13 @@ class MoodleRequest
     {
         $client = new Client();    
         $res = $client->request('GET', config("moodle.webservice_url"), $this->params);
-        return json_decode($res->getBody()->getContents(),1);
+        $data = json_decode($res->getBody()->getContents(),1);
+
+        if(array_key_exists("exception",$data)){
+            throw new Exception($data["message"]);
+        }else{
+            return $data;
+        }
     }
 }
 ?>

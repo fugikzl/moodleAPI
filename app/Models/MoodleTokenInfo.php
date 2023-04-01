@@ -24,10 +24,10 @@ class MoodleTokenInfo extends Model
         return self::where("ws_token",$ws_token)->count() > 0 ? true : false;
     }
 
-    public static function getOrStoreUser(string $ws_token)
+    public static function getOrStoreUser(string $ws_token) : int
     {
         if(self::isUserStored($ws_token)){
-            return MoodleTokenInfo::where("ws_token",$ws_token)->first->user_id;
+            return MoodleTokenInfo::where("ws_token",$ws_token)->first()->user_id;
         }else{
             $tokenInfo = MoodleTokenInfo::create([
                 "ws_token" => $ws_token,
