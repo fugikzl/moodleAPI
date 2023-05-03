@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('moodle_token_infos', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string("ws_token");
-            $table->unsignedBigInteger("user_id")->unique();
+        Schema::create('assignments', function (Blueprint $table) {
+            $table->unsignedBigInteger("assignment_id")->primary();
+            $table->string("name");
+            $table->unsignedBigInteger("course_id");
+
+            $table->foreign("course_id")->references("course_id")->on("courses");
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('moodle_token_infos');
+        Schema::dropIfExists('course_assignments');
     }
 };

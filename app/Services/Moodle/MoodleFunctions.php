@@ -32,6 +32,11 @@ class MoodleFunctions
         return $moodleRequest->send();
     }
 
+    public static function generateUrl(string $ws_token, $url)
+    {
+        // return config("moodle.webservice_url").$url.""
+    }
+
     public static function getUserCoursesGrade(string $ws_token, int $userid)
     {
         $moodleRequest = new MoodleRequest($ws_token,"gradereport_overview_get_course_grades",[
@@ -76,7 +81,7 @@ class MoodleFunctions
         return $moodleRequest->send();
     }
 
-    public static function getCourseAssignments(string $ws_token, int $courseid)
+    public static function getCourseContents(string $ws_token, int $courseid)
     {
         $moodleRequest = new MoodleRequest($ws_token,"core_course_get_contents",[
             // "wsfunction" => "core_course_get_contents",
@@ -95,5 +100,24 @@ class MoodleFunctions
         ]);
         return $moodleRequest->send()["courses"];
     }
+
+    public static function getAssignmentsByCourse(string $ws_token, int $courseid)
+    {
+        $moodleRequest = new MoodleRequest($ws_token,"mod_assign_get_assignments",[
+            "courseids[0]" => $courseid,
+        ]);
+
+        return $moodleRequest->send();
+    }
+
+    // public static function getAssignmentsByCourses(string $ws_token, array $courseIds)
+    // {
+    //     $moodleRequest = new MoodleRequest($ws_token,"core_course_get_courses_by_field",[
+    //         "field" => "id",
+    //         "value" => $courseid,
+    //     ]);
+
+    //     return $moodleRequest->send();
+    // }
 }
 

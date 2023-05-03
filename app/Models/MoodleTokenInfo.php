@@ -26,14 +26,15 @@ class MoodleTokenInfo extends Model
 
     public static function getOrStoreUser(string $ws_token) : int
     {
+        $data = MoodleTokenInfo::where("ws_token",$ws_token)->first();
         if(self::isUserStored($ws_token)){
-            return MoodleTokenInfo::where("ws_token",$ws_token)->first()->user_id;
+            return $data->user_id;
         }else{
-            $tokenInfo = MoodleTokenInfo::create([
+            $tokenInfo = MoodleTokenInfo::updateOrCreate([
+                "user_id" => $data->user_id
+            ],[ 
                 "ws_token" => $ws_token,
-                "user_id" => MoodleFunctions::getUserInfo($ws_token)["user_id"]
             ]);
-
             return $tokenInfo->user_id;
         }
     }

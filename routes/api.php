@@ -15,10 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/{wstoken}/get-user-info",[MoodleApiController::class,"getUserInfo"]); // get info a    
+Route::get("/{wstoken}/get-user-info",[MoodleApiController::class,"getUserInfo"]); 
 Route::get("/{wstoken}/get-user-courses",[MoodleApiController::class,"getUserCourses"]);
 Route::get("/{wstoken}/get-user-relative-courses",[MoodleApiController::class,"getUserRelativeCourses"]);
-Route::get("/{wstoken}/course/{course_id}/get-grade",[MoodleApiController::class,"getUserCourseGrade"]);
+Route::get("/{wstoken}/course/{course_id}/get-grade",[MoodleApiController::class,"getCourseGrades"]);
+Route::get("/{wstoken}/course/{course_id}/get-contents",[MoodleApiController::class,"getCourseContents"]);
+Route::get("/{wstoken}/course/{course_id}/get-assignments",[MoodleApiController::class,"getCourseAssignments"]);
+Route::get("/{wstoken}/course/get-assignments",[MoodleApiController::class,"getCoursesAssignments"]);
+
+
+
+
 
 
 
