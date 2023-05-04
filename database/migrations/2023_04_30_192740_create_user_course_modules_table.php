@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_assignments', function (Blueprint $table) {
+        Schema::create('user_course_modules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("assignment_id");
+            $table->unsignedBigInteger("cmid");
             $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger("course_id");
             $table->unsignedFloat("grade");
+            $table->string("name");
 
-            $table->foreign("assignment_id")->references("assignment_id")->on("course_assignments");
+
+            $table->foreign("course_id")->references("course_id")->on("courses");
             $table->foreign("user_id")->references("user_id")->on("moodle_token_infos");
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_assignments');
+        Schema::dropIfExists('user_course_modules');
     }
 };

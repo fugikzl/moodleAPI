@@ -6,19 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserAssignment extends Model
+class UserCourseModule extends Model
 {
     protected $fillable = [
-        'assignment_id',
+        'cmid',
+        'course_id',
         'user_id',
-        'grade'
+        'grade',
+        "name"
     ];
 
+    public $incrementing = false;
     public $timestamps = false;
 
     public function assignment() : BelongsTo
     {
-        return $this->belongsTo(Assignment::class, "assignment_id", "assignment_id");
+        return $this->belongsTo(CourseModule::class, "cmid", "cmid");
     }
 
     public function course() : BelongsTo

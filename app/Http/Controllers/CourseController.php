@@ -2,33 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CourseContentResource;
-use App\Http\Resources\MoodleCourseResource;
 use App\Models\MoodleTokenInfo;
 use App\Services\Moodle\MoodleFunctions;
+use App\Services\Moodle\Resources\CourseContentResource;
 use Illuminate\Http\Request;
+use App\Services\Moodle\Resources\MoodleCourseResource;
 
-class MoodleApiController extends Controller
+class CourseController extends Controller
 {
-    private Request $request;
-
-    public function __construct(Request $request)
+    public function getCourseGrades(string $wstoken, int $course_id)
     {
-        $this->request = $request;    
-    }
-
-    public function getUserInfo(string $wstoken)
-    {
-        $data = MoodleFunctions::getUserInfo($wstoken);
-
-        MoodleTokenInfo::create([
-            "ws_token" => $wstoken,
-            "user_id" => $data["user_id"]
-        ]);
+        $user_id = MoodleTokenInfo::getOrStoreUser($wstoken);
 
         return response()->json(
-            $data    
-        );
+            MoodleFunctions::getCourseGrades($wstoken,$course_id,$user_id)
+        );    
     }
 
     public function getUserCourses(string $wstoken)
@@ -58,15 +46,6 @@ class MoodleApiController extends Controller
     
     }
 
-    public function getCourseGrades(string $wstoken, int $course_id)
-    {
-        $user_id = MoodleTokenInfo::getOrStoreUser($wstoken);
-
-        return response()->json(
-            MoodleFunctions::getCourseGrades($wstoken,$course_id,$user_id)
-        );    
-    }
-
     public function getCourseContents(string $wstoken, int $course_id)
     {
         $user_id = MoodleTokenInfo::getOrStoreUser($wstoken);
@@ -76,17 +55,10 @@ class MoodleApiController extends Controller
         );    
     }
 
-    public function getCourseAssignments(string $wstoken, int $course_id)
+    public function getCourseByid(string $wstoken, int $course_id)
     {
-        $user_id = MoodleTokenInfo::getOrStoreUser($wstoken);
-
         return response()->json(
-            MoodleFunctions::getAssignmentsByCourse($wstoken, $course_id)
+            MoodleFunctions::getCourseByid($wstoken,$course_id)[0]
         );
-    }
-
-    public function getCoursesAssignments(string $wstoken)
-    {
-
     }
 }

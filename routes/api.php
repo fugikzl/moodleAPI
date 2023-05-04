@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\MoodleApiController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,13 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/{wstoken}/get-user-info",[MoodleApiController::class,"getUserInfo"]); 
-Route::get("/{wstoken}/get-user-courses",[MoodleApiController::class,"getUserCourses"]);
-Route::get("/{wstoken}/get-user-relative-courses",[MoodleApiController::class,"getUserRelativeCourses"]);
-Route::get("/{wstoken}/course/{course_id}/get-grade",[MoodleApiController::class,"getCourseGrades"]);
-Route::get("/{wstoken}/course/{course_id}/get-contents",[MoodleApiController::class,"getCourseContents"]);
-Route::get("/{wstoken}/course/{course_id}/get-assignments",[MoodleApiController::class,"getCourseAssignments"]);
-Route::get("/{wstoken}/course/get-assignments",[MoodleApiController::class,"getCoursesAssignments"]);
+Route::get("/{wstoken}/get-user-info",[UserController::class,"getUserInfo"]); 
+Route::get("/{wstoken}/course/{course_id}/updateModules",[UserController::class,"updateCourseModules"]);
+
+Route::get("/{wstoken}/get-user-courses",[CourseController::class,"getUserCourses"]);
+Route::get("/{wstoken}/get-user-relative-courses",[CourseController::class,"getUserRelativeCourses"]);
+Route::get("/{wstoken}/course/{course_id}",[CourseController::class, "getCourseById"]);
+Route::get("/{wstoken}/course/{course_id}/get-grade",[CourseController::class,"getCourseGrades"]);
+Route::get("/{wstoken}/course/{course_id}/get-contents",[CourseController::class,"getCourseContents"]);
+
+Route::get("/{wstoken}/course/{course_id}/get-assignments",[AssignmentController::class,"getCourseAssignments"]);
+Route::get("/{wstoken}/course/get-assignments",[AssignmentController::class,"getCoursesAssignments"]);
 
 
 

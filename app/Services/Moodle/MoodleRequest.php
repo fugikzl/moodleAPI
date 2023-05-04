@@ -5,12 +5,11 @@ namespace App\Services\Moodle;
 use Exception;
 use GuzzleHttp\Client;
 
+/**
+ * @method array send() send a request
+ */
 class MoodleRequest
 {
-    // private string $ws_function;
-    // private string $ws_token;
-    // private string $format = "json";
-    // private array $params;
     /**
      * 
      * Create request to your own moodle webservice rest api. Бля такая параша поидеи АИТУ, пацаны не поступайте сюда
@@ -33,7 +32,6 @@ class MoodleRequest
         $this->params = ['query' => $this->params];
     }
     /** 
-     * 
      * Send request
      * @return array resultant response array
      */
@@ -42,8 +40,6 @@ class MoodleRequest
         $client = new Client();    
         $res = $client->request('GET', config("moodle.webservice_url")."webservice/rest/server.php", $this->params);
         $data = json_decode($res->getBody()->getContents(),1);
-
-        // dd($data);
 
         if(array_key_exists("exception",$data)){
             throw new Exception($data["message"]);
