@@ -41,6 +41,7 @@ class MoodleRequest
         $res = $client->request('GET', config("moodle.webservice_url")."webservice/rest/server.php", $this->params);
         $data = json_decode($res->getBody()->getContents(),1);
 
+        // dd($data);
         if(array_key_exists("exception",$data)){
             throw new Exception($data["message"]);
         }else{

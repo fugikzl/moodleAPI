@@ -136,14 +136,16 @@ class MoodleFunctions
         return $moodleRequest->send();
     }
 
-    // public static function getAssignmentsByCourses(string $ws_token, array $courseIds)
-    // {
-    //     $moodleRequest = new MoodleRequest($ws_token,"core_course_get_courses_by_field",[
-    //         "field" => "id",
-    //         "value" => $courseid,
-    //     ]);
+    public static function getAssignmentsByCourses(string $ws_token, array $courseIds)
+    {
+        $param = [];
+        foreach($courseIds as $i=>$id)
+        {
+            $param["courseids[$i]"] = $id;
+        }
+        $moodleRequest = new MoodleRequest($ws_token,"mod_assign_get_assignments",$param);
 
-    //     return $moodleRequest->send();
-    // }
+        return $moodleRequest->send();
+    }
 }
 

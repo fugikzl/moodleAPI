@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         $data = MoodleFunctions::getUserInfo($wstoken);
 
-        MoodleTokenInfo::create([
+        MoodleTokenInfo::updateOrCreate([
             "ws_token" => $wstoken,
             "user_id" => $data["user_id"]
         ]);
@@ -34,7 +34,8 @@ class UserController extends Controller
         );
     }
 
-    public function updateCourseModules(string $wstoken, int $course_id){
+    public function updateCourseModules(string $wstoken, int $course_id)
+    {
         $st = microtime(true);
         $user_id = MoodleTokenInfo::getOrStoreUser($wstoken);
         $course = Course::where("course_id", $course_id)->first();
@@ -50,4 +51,24 @@ class UserController extends Controller
         $et = microtime(true);
         return [$res, ($et-$st)];
     }
+
+    // public function updateCoursesModules(string $wstoken)
+    // {
+    //     $user_id = MoodleTokenInfo::getOrStoreUser($wstoken);
+    //     $courses = MoodleFunctions::getUserCourses($wstoken, $user_id);
+
+    //     $relativeCourses = array_filter($courses, function ($course) {
+    //         $currentDate = time();
+    //         return $course['enddate'] > $currentDate;
+    //     });
+
+    //     $courses = [];
+
+    //     foreach($relativeCourses as $course){$courses[] = $course;}
+
+    //     $res = $this->userCourseModuleRepository->updateCoursesModules($wstoken, $courses, $user_id);
+
+
+    //     dd($courses);
+    // }
 }

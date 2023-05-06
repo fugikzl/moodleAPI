@@ -1,35 +1,43 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Jobs;
 
-use App\Models\Course;
-use App\Models\MoodleTokenInfo;
-use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 use App\Models\UserCourseModule;
 use App\Services\Moodle\MoodleFunctions;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-/**
- * Class UserCourseModuleRepository.
- */
-class UserCourseModuleRepository extends BaseRepository
+class GetCourseUpdate implements ShouldQueue
 {
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     /**
-     * @return string
-     *  Return the model
+     * Create a new job instance.
      */
-    public function model()
-    {
-        return UserCourseModule::class;
-    }
+    public function __construct(
+        private string $wstoken, 
+        private int $user_id, 
+        private int $course_id,
+        private string $course_name
+    ){}
 
-    public function updateCoursesModules(string $wstoken, array $courses, $user_id)
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
     {
-       
+        // echo("started...\n");
+        $wstoken = $this->wstoken;
+        $user_id = $this->user_id;
+        $course_name = $this->course_name;
+        $course_id = $this->course_id;
         
-    }
+        GetCourseUpdate::dispatch($wstoken,$user_id, $course_id, $course_name)->delay(now()->addSeconds(2));
 
-    public function updateCourseModules(string $wstoken, int $course_id, int $user_id, string $course_name) : array
-    {
         $currentUserCourseModules = [];
         $grades = MoodleFunctions::getCourseGrades($wstoken, $course_id, $user_id);
         $userCourseModules = UserCourseModule::where("user_id",$user_id)->where("course_id",$course_id)->get()->keyBy('cmid')->toArray();
@@ -75,6 +83,11 @@ class UserCourseModuleRepository extends BaseRepository
                 ];
             }
         } 
-        return $res;
+
+        if($res !== []){
+            print_r($res);
+        }
     }
+
+    
 }
