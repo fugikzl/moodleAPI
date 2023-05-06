@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/{wstoken}/get-user-info",[UserController::class,"getUserInfo"]); 
 Route::get("/{wstoken}/course/{course_id}/updateModules",[UserController::class,"updateCourseModules"]);
+Route::get("/{wstoken}/course/update-modules",[UserController::class,"updateCoursesModules"]);
 
 Route::get("/{wstoken}/get-user-courses",[CourseController::class,"getUserCourses"]);
 Route::get("/{wstoken}/get-user-relative-courses",[CourseController::class,"getUserRelativeCourses"]);
