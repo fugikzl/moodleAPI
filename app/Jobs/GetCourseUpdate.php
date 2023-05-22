@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\UserCourseModule;
 use App\Services\Moodle\MoodleFunctions;
+use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -86,6 +87,14 @@ class GetCourseUpdate implements ShouldQueue
 
         if($res !== []){
             print_r($res);
+            print_r("\nSending request...\n");
+            $client = new Client();
+            $client->post(env("TELEGRAM_BOT_API_ENDPOINT")."/set-update",[
+                "body" => json_encode([
+                    "moodle_user_id" => $user_id,
+                    "update" => $res
+                ])
+            ]);
         }
     }
 

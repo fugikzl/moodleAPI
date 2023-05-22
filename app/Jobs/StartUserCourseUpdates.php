@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Course;
 use App\Models\MoodleTokenInfo;
 use App\Services\Moodle\MoodleFunctions;
 use Illuminate\Bus\Queueable;
@@ -35,6 +36,14 @@ class StartUserCourseUpdates implements ShouldQueue
             $currentDate = time();
             return $course['enddate'] > $currentDate;
         });
+
+        foreach($relativeCourses as $relativeCourse)
+        {
+            Course::firstOrCreate([
+                "course_id" => $relativeCourse["id"],
+                "name" => $relativeCourse["displayname"]
+            ]);
+        }
 
         foreach($relativeCourses as $relativeCourse)
         {
